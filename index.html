@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>지구과학 수업 자료실 | 교재 & 인터랙티브 시뮬레이션</title>
+  <style>
+    :root {
+      --bg-color: #f4f7fb;
+      --surface-color: #ffffff;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --accent-blue: #2563eb;
+      --accent-blue-light: #dbeafe;
+      --accent-emerald: #059669;
+      --accent-emerald-light: #d1fae5;
+      --border-color: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* 상단 헤더 영역 */
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #ffffff;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      color: #cbd5e1;
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* 메인 컨테이너 */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* 필터 & 검색 컨트롤 바 */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 0.5rem 1.1rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--surface-color);
+      color: var(--text-secondary);
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    .filter-btn.active {
+      background-color: var(--accent-blue);
+      color: #ffffff;
+      border-color: var(--accent-blue);
+    }
+
+    .search-box {
+      padding: 0.55rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      width: 240px;
+      background-color: var(--surface-color);
+      outline: none;
+    }
+
+    .search-box:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px var(--accent-blue-light);
+    }
+
+    /* 단원 섹션 제목 */
+    .unit-section {
+      margin-bottom: 2.8rem;
+    }
+
+    .unit-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* 카드 그리드 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.4rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--accent-blue);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+    }
+
+    .badge-app {
+      background-color: var(--accent-blue-light);
+      color: var(--accent-blue);
+    }
+
+    .badge-textbook {
+      background-color: var(--accent-emerald-light);
+      color: var(--accent-emerald);
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+
+    .card-footer {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.6rem; }
+      .search-box { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🌍 지구과학 인터랙티브 수업 자료실</h1>
+    <p>수업 시간 활용 교재 및 탐구 시뮬레이션 웹 앱 모음입니다. 카드를 클릭하면 바로 실행됩니다.</p>
+  </header>
+
+  <main>
+    <!-- 필터 버튼 및 검색창 -->
+    <div class="controls">
+      <div class="filter-group">
+        <button class="filter-btn active" data-filter="all">전체 보기</button>
+        <button class="filter-btn" data-filter="app">🧪 인터랙티브 앱</button>
+        <button class="filter-btn" data-filter="textbook">📖 수업 교재</button>
+      </div>
+      <input type="text" id="searchInput" class="search-box" placeholder="자료 제목 또는 키워드 검색..." />
+    </div>
+
+    <!-- 단원 1: 대기와 해양의 운동 -->
+    <section class="unit-section">
+      <h2 class="unit-title">🌊 I. 대기와 해양의 운동과 상호작용</h2>
+      <div class="card-grid">
+        
+        <!-- 카드 예시 1: 인터랙티브 앱 -->
+        <a href="apps/geostrophic-wind.html" class="card" data-category="app">
+          <div>
+            <div class="card-header">
+              <span class="badge badge-app">인터랙티브 앱</span>
+            </div>
+            <h3>지균풍 발생 원리 시뮬레이션</h3>
+            <p>기압 경도력과 전향력의 평형 과정을 단계별로 조절하며 공기 덩어리의 이동 경로를 탐구합니다.</p>
+          </div>
+          <div class="card-footer">실행하기 →</div>
+        </a>
+
+        <!-- 카드 예시 2: 인터랙티브 앱 -->
+        <a href="apps/ekman-transport.html" class="card" data-category="app">
+          <div>
+            <div class="card-header">
+              <span class="badge badge-app">인터랙티브 앱</span>
+            </div>
+            <h3>3D 에크만 나선과 수송</h3>
+            <p>수심에 따른 해수의 유속과 방향 변화, 북반구·남반구에서의 순수송 방향을 3차원으로 확인합니다.</p>
+          </div>
+          <div class="card-footer">실행하기 →</div>
+        </a>
+
+        <!-- 카드 예시 3: 수업 교재 -->
+        <a href="textbooks/enso-guide.html" class="card" data-category="textbook">
+          <div>
+            <div class="card-header">
+              <span class="badge badge-textbook">수업 교재</span>
+            </div>
+            <h3>엘니뇨·라니냐 판별 탐구 활동지</h3>
+            <p>태평양 수온 편차와 남방진동지수(SOI) 데이터를 해석하는 단계별 의사결정 흐름도 교재입니다.</p>
+          </div>
+          <div class="card-footer">열어보기 →</div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- 단원 2: 우주와 행성 운동 -->
+    <section class="unit-section">
+      <h2 class="unit-title">🌕 II. 행성의 운동과 조석 현상</h2>
+      <div class="card-grid">
+
+        <a href="apps/tidal-mechanics.html" class="card" data-category="app">
+          <div>
+            <div class="card-header">
+              <span class="badge badge-app">인터랙티브 앱</span>
+            </div>
+            <h3>달의 위상과 기조력(조석) 시뮬레이터</h3>
+            <p>공통 질량 중심 운동과 달의 적위 변화에 따른 일조부등 현상을 실시간으로 관찰합니다.</p>
+          </div>
+          <div class="card-footer">실행하기 →</div>
+        </a>
+
+        <a href="textbooks/foehn-effect.html" class="card" data-category="textbook">
+          <div>
+            <div class="card-header">
+              <span class="badge badge-textbook">수업 교재</span>
+            </div>
+            <h3>단열 변화와 푄(Föhn) 현상 계산 노트</h3>
+            <p>산맥을 넘는 공기 덩어리의 건조·습윤 단열 감률과 이슬점 변화를 계산하는 정리 자료입니다.</p>
+          </div>
+          <div class="card-footer">열어보기 →</div>
+        </a>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Earth Science Interactive Lab. 수업 및 학습 목적으로 자유롭게 활용할 수 있습니다.</p>
+  </footer>
+
+  <!-- 필터링 및 검색 동작 스크립트 -->
+  <script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('searchInput');
+    const cards = document.querySelectorAll('.card');
+    const sections = document.querySelectorAll('.unit-section');
+
+    let currentFilter = 'all';
+
+    function updateDisplay() {
+      const keyword = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const text = card.innerText.toLowerCase();
+
+        const matchesFilter = (currentFilter === 'all') || (category === currentFilter);
+        const matchesSearch = text.includes(keyword);
+
+        card.style.display = (matchesFilter && matchesSearch) ? 'flex' : 'none';
+      });
+
+      // 표시할 카드가 하나도 없는 단원 섹션은 자동으로 숨김 처리
+      sections.forEach(section => {
+        const visibleCards = section.querySelectorAll('.card[style*="display: flex"]');
+        section.style.display = visibleCards.length > 0 ? 'block' : 'none';
+      });
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        updateDisplay();
+      });
+    });
+
+    searchInput.addEventListener('input', updateDisplay);
+  </script>
+
+</body>
+</html>
